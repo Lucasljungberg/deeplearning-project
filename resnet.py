@@ -10,9 +10,9 @@ import numpy as np
 import os
 import os.path
 import tensorflow as tf
-import resnet_keras
 from keras.models import Model, load_model
 from keras import optimizers
+
 
 # Weights file path
 weight_file = 'weights/resnet50_weights_tf_dim_ordering_tf_kernels.h5'
@@ -47,6 +47,43 @@ x_test = np.pad(x_test, [(0, 0), (84, 84), (84, 84), (0, 0)], 'mean')
 y_train = npu.to_categorical(y_train, NUM_CLASSES)
 y_test = npu.to_categorical(y_test, NUM_CLASSES)
 
+# some help functions
+def save_model(model):
+    model.save(extended_resnet_model_path)
+    print("Saved model successfully!")
+
+def get_model ():
+    if (os.path.isfile(extended_resnet_model_path)):
+        print("Found existing model")
+        return load_model(extended_resnet_model_path)
+    else:
+        print("Could not find existing model... creating extended model from scratch")
+        return create_extended_model()
+
+def create_extended_model ():
+    # Create pretrained ResNet50 model
+    resnet_model = ResNet50(weights='imagenet', include_top=False, input_shape=(200, 200, 3))
+    # Freeze the model - We don't want to train it
+    for layer in resnet_model.layers:
+        layer.trainable = False
+
+    # Extend the model for transfer learning
+    ext_model = resnet_model.output
+    ext_model = Flatten()(ext_model)
+    ext_model = Dense(1024, activation='relu')(ext_model)
+    ext_model = Dropout(0.5)(ext_model)
+    ext_model = Dense(1024, activation='relu')(ext_model)
+    output = Dense(10, activation='softmax')(ext_model)
+
+    # Create and compile the new extended model
+    model = Model(inputs = resnet_model.input, outputs = output)
+    model.compile(
+        loss = 'categorical_crossentropy', 
+        optimizer = optimizers.SGD(lr = 0.001, momentum = 0.9),
+        metrics=['accuracy'])
+
+    return model
+    
 # Fetch the model (or create it if there is none)
 model = get_model()
 
@@ -85,38 +122,4 @@ elif mode == 'evaluate':
         print(res)
 
 
-def save_model(model):
-    model.save(extended_resnet_model_path)
-    print("Saved model successfully!")
 
-def get_model ():
-    if (os.path.isfile(extended_resnet_model_path)):
-        print("Found existing model")
-        return load_model(extended_resnet_model_path)
-    else:
-        print("Could not find existing model... creating extended model from scratch")
-        return create_extended_model()
-
-def create_extended_model ():
-    # Create pretrained ResNet50 model
-    resnet_model = ResNet50(weights='imagenet', include_top=False, input_shape=(200, 200, 3))
-    # Freeze the model - We don't want to train it
-    for layer in resnet_model.layers:
-        layer.trainable = False
-
-    # Extend the model for transfer learning
-    ext_model = resnet_model.output
-    ext_model = Flatten()(ext_model)
-    ext_model = Dense(1024, activation='relu')(ext_model)
-    ext_model = Dropout(0.5)(ext_model)
-    ext_model = Dense(1024, activation='relu')(ext_model)
-    output = Dense(10, activation='softmax')(ext_model)
-
-    # Create and compile the new extended model
-    model = Model(inputs = resnet_model.input, outputs = output)
-    model.compile(
-        loss = 'categorical_crossentropy', 
-        optimizer = optimizers.SGD(lr = 0.001, momentum = 0.9),
-        metrics=['accuracy'])
-
-    return model

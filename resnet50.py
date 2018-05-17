@@ -15,6 +15,7 @@ from keras import optimizers
 
 
 # Weights file path
+weight_file = 'weights/resnet50_weights_tf_dim_ordering_tf_kernels.h5'
 
 extended_resnet_model_path = "models/extended_resnet50"
 # Silence debug-info (relevant for tensorflow-gpu)

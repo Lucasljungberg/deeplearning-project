@@ -10,6 +10,9 @@ import numpy as np
 import os
 import os.path
 import tensorflow as tf
+import resnet_keras
+from keras.models import Model, load_model
+from keras import optimizers
 
 # Weights file path
 weight_file = 'weights/resnet50_weights_tf_dim_ordering_tf_kernels.h5'

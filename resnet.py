@@ -1,3 +1,6 @@
+import sys
+sys.path.append('/usr/local/lib/python3.6/dist-packages')
+
 import keras.datasets.cifar10 as cf10
 import keras.preprocessing.image as im
 import keras.utils.np_utils as npu
@@ -6,7 +9,6 @@ from keras.layers import Input, Dense, Activation, Flatten, Conv2D, MaxPooling2D
 import numpy as np
 import os
 import os.path
-import sys
 import tensorflow as tf
 import resnet_keras
 

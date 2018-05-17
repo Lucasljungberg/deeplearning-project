@@ -4,7 +4,7 @@ sys.path.append('/usr/local/lib/python3.6/dist-packages')
 import keras.datasets.cifar10 as cf10
 import keras.preprocessing.image as im
 import keras.utils.np_utils as npu
-from keras.applications.resnet50 import ResNet50
+from imported_models.resnet152 import ResNet152
 from keras.layers import Input, Dense, Dropout, Activation, Flatten, Conv2D, MaxPooling2D, AveragePooling2D, GlobalAveragePooling2D, GlobalMaxPooling2D, ZeroPadding2D, BatchNormalization
 import numpy as np
 import os
@@ -16,7 +16,7 @@ from keras import optimizers
 
 # Weights file path
 
-extended_resnet_model_path = "models/extended_resnet50"
+extended_resnet_model_path = "models/extended_resnet152"
 # Silence debug-info (relevant for tensorflow-gpu)
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 config = tf.ConfigProto()
@@ -62,7 +62,7 @@ def get_model ():
 
 def create_extended_model ():
     # Create pretrained ResNet50 model
-    resnet_model = ResNet50(weights='imagenet', include_top=False, input_shape=(200, 200, 3))
+    resnet_model = ResNet152(weights='imagenet', include_top=False, input_shape=(200, 200, 3))
     # Freeze the model - We don't want to train it
     for layer in resnet_model.layers:
         layer.trainable = False

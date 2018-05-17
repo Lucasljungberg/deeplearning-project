@@ -16,7 +16,7 @@ from keras import optimizers
 
 # Weights file path
 
-extended_resnet_model_path = "models/extended_resnet50"
+extended_resnet_model_path = "models/extended_resnet101"
 # Silence debug-info (relevant for tensorflow-gpu)
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 config = tf.ConfigProto()

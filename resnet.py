@@ -5,7 +5,7 @@ import keras.datasets.cifar10 as cf10
 import keras.preprocessing.image as im
 import keras.utils.np_utils as npu
 from keras.applications.resnet50 import ResNet50
-from keras.layers import Input, Dense, Activation, Flatten, Conv2D, MaxPooling2D, AveragePooling2D, GlobalAveragePooling2D, GlobalMaxPooling2D, ZeroPadding2D, BatchNormalization
+from keras.layers import Input, Dense, Dropout, Activation, Flatten, Conv2D, MaxPooling2D, AveragePooling2D, GlobalAveragePooling2D, GlobalMaxPooling2D, ZeroPadding2D, BatchNormalization
 import numpy as np
 import os
 import os.path
@@ -83,7 +83,7 @@ def create_extended_model ():
         metrics=['accuracy'])
 
     return model
-    
+
 # Fetch the model (or create it if there is none)
 model = get_model()
 

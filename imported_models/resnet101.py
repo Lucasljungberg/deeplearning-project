@@ -28,7 +28,6 @@ from keras.applications.imagenet_utils import _obtain_input_shape
 from keras.utils.data_utils import get_file
 
 import warnings
-import sys
 sys.setrecursionlimit(3000)
 
 

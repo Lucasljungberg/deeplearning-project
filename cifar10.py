@@ -6,6 +6,10 @@ GPU run command with Theano backend (with TensorFlow, the GPU is automatically u
     THEANO_FLAGS=mode=FAST_RUN,device=gpu,floatX=float32 python cifar10.py
 """
 from __future__ import print_function
+
+import sys
+sys.path.append('/usr/local/lib/python3.6/dist-packages')
+
 from keras.datasets import cifar10
 from keras.preprocessing.image import ImageDataGenerator
 from keras.utils import np_utils

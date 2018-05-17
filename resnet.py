@@ -31,7 +31,8 @@ if len(sys.argv) < 2:
 
 # Consider splitting some training data into validation data
 (x_train, y_train), (x_test, y_test) = cf10.load_data()
-
+x_train = x_train[0:10000, :, :, :]
+y_train = y_train[0:10000, :]
 # Parameters
 NUM_CLASSES = 10
 batch_size = 32

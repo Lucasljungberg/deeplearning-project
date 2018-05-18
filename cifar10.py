@@ -17,7 +17,9 @@ from keras.callbacks import ReduceLROnPlateau, CSVLogger, EarlyStopping
 
 import numpy as np
 import resnetBuild
-
+import os.path
+import json
+import matplotlib.pyplot as plt
 
 lr_reducer = ReduceLROnPlateau(factor=np.sqrt(0.1), cooldown=0, patience=5, min_lr=0.5e-6)
 early_stopper = EarlyStopping(min_delta=0.001, patience=10)
@@ -50,10 +52,12 @@ X_test -= mean_image
 X_train /= 128.
 X_test /= 128.
 
-model = resnetBuild.ResnetBuilder.build_resnet_18((img_channels, img_rows, img_cols), nb_classes)
+model = resnetBuild.ResnetBuilder.build_resnet_101((img_channels, img_rows, img_cols), nb_classes)
 model.compile(loss='categorical_crossentropy',
               optimizer='adam',
               metrics=['accuracy'])
+
+mode = sys.argv[1]
 
 if not data_augmentation:
     print('Not using data augmentation.')

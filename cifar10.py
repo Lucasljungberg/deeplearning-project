@@ -12,6 +12,7 @@ sys.path.append('/usr/local/lib/python3.6/dist-packages')
 
 from keras.datasets import cifar10
 from keras.preprocessing.image import ImageDataGenerator
+import keras.preprocessing.image as im
 from keras.utils import np_utils
 from keras.callbacks import ReduceLROnPlateau, CSVLogger, EarlyStopping
 
@@ -43,15 +44,15 @@ img_channels = 3
 Y_train = np_utils.to_categorical(y_train, nb_classes)
 Y_test = np_utils.to_categorical(y_test, nb_classes)
 
-X_train = X_train.astype('float32')
-X_test = X_test.astype('float32')
+# X_train = X_train.astype('float32')
+# X_test = X_test.astype('float32')
 
 # subtract mean and normalize
-mean_image = np.mean(X_train, axis=0)
-X_train -= mean_image
-X_test -= mean_image
-X_train /= 128.
-X_test /= 128.
+# mean_image = np.mean(X_train, axis=0)
+# X_train -= mean_image
+# X_test -= mean_image
+# X_train /= 128.
+# X_test /= 128.
 
 print(X_train.shape)
 print(Y_train.shape)

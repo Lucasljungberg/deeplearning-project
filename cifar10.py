@@ -29,7 +29,7 @@ csv_logger = CSVLogger('resnet18_cifar10.csv')
 
 batch_size = 32
 nb_classes = 10
-nb_epoch = 1
+nb_epoch = 200
 data_augmentation = True
 
 # input image dimensions
@@ -44,20 +44,20 @@ img_channels = 3
 Y_train = np_utils.to_categorical(y_train, nb_classes)
 Y_test = np_utils.to_categorical(y_test, nb_classes)
 
-# X_train = X_train.astype('float32')
-# X_test = X_test.astype('float32')
+X_train = X_train.astype('float32')
+X_test = X_test.astype('float32')
 
 # subtract mean and normalize
-# mean_image = np.mean(X_train, axis=0)
-# X_train -= mean_image
-# X_test -= mean_image
-# X_train /= 128.
-# X_test /= 128.
+mean_image = np.mean(X_train, axis=0)
+X_train -= mean_image
+X_test -= mean_image
+X_train /= 128.
+X_test /= 128.
 
-print(X_train.shape)
-print(Y_train.shape)
-X_train = X_train[0 : 64, :, :, :]
-Y_train = Y_train[0 : 64, :]
+#print(X_train.shape)
+#print(Y_train.shape)
+#X_train = X_train[0 : 32, :, :, :]
+#Y_train = Y_train[0 : 32, :]
 
 model = resnetBuild.ResnetBuilder.build_resnet_18((img_channels, img_rows, img_cols), nb_classes)
 model.compile(loss='categorical_crossentropy',
@@ -103,8 +103,8 @@ if (mode in ['train']):
      # print(res.history.shape)
       print(res.history)
       util.save_model(model, 'resnet18')
-      util.save_train_data('resnet18', res.history)
-      util.plot(res.history)
+      #util.save_train_data('resnet18', res.history)
+      #util.plot(res.history)
 
 elif (mode in ['test', 'evaluate']):
     accuracy = []

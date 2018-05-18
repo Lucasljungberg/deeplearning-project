@@ -28,7 +28,7 @@ csv_logger = CSVLogger('resnet18_cifar10.csv')
 
 batch_size = 32
 nb_classes = 10
-nb_epoch = 200
+nb_epoch = 1
 data_augmentation = True
 
 # input image dimensions
@@ -52,6 +52,11 @@ X_train -= mean_image
 X_test -= mean_image
 X_train /= 128.
 X_test /= 128.
+
+print(X_train.shape)
+print(Y_train.shape)
+X_train = X_train[0 : 64, :, :, :]
+Y_train = Y_train[0 : 64, :]
 
 model = resnetBuild.ResnetBuilder.build_resnet_18((img_channels, img_rows, img_cols), nb_classes)
 model.compile(loss='categorical_crossentropy',
@@ -94,7 +99,8 @@ if (mode in ['train']):
                           validation_data=(X_test, Y_test),
                           epochs=nb_epoch, verbose=1, max_q_size=100,
                           callbacks=[lr_reducer, early_stopper, csv_logger])
-
+     # print(res.history.shape)
+      print(res.history)
       util.save_model(model, 'resnet18')
       util.save_train_data('resnet18', res.history)
       util.plot(res.history)

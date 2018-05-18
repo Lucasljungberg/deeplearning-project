@@ -53,14 +53,14 @@ X_test -= mean_image
 X_train /= 128.
 X_test /= 128.
 
-model = resnetBuild.ResnetBuilder.build_resnet_101((img_channels, img_rows, img_cols), nb_classes)
+model = resnetBuild.ResnetBuilder.build_resnet_18((img_channels, img_rows, img_cols), nb_classes)
 model.compile(loss='categorical_crossentropy',
               optimizer='adam',
               metrics=['accuracy'])
 
 mode = sys.argv[1]
 
-if (mode in ['train']:
+if (mode in ['train']):
   if not data_augmentation:
       print('Not using data augmentation.')
       model.fit(X_train, Y_train,
@@ -95,11 +95,11 @@ if (mode in ['train']:
                           epochs=nb_epoch, verbose=1, max_q_size=100,
                           callbacks=[lr_reducer, early_stopper, csv_logger])
 
-      util.save_model(model, 'resnet101')
-      util.save_train_data('resnet101', res.history)
+      util.save_model(model, 'resnet18')
+      util.save_train_data('resnet18', res.history)
       util.plot(res.history)
 
-else if (mode in ['test', 'evaluate']):
+elif (mode in ['test', 'evaluate']):
     accuracy = []
     for i in range(100):
         x_batch = X_test[i*10:(i+1)*10]

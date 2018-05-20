@@ -10,6 +10,11 @@ from __future__ import print_function
 import sys
 sys.path.append('/usr/local/lib/python3.6/dist-packages')
 
+#import tensorflow as tf
+#sess = tf.Session(config=tf.ConfigProto(log_device_placement=True))
+#from tensorflow.python.client import device_lib
+#print(device_lib.list_local_devices())
+
 from keras.datasets import cifar10
 from keras.preprocessing.image import ImageDataGenerator
 import keras.preprocessing.image as im
@@ -59,7 +64,8 @@ X_test /= 128.
 #X_train = X_train[0 : 32, :, :, :]
 #Y_train = Y_train[0 : 32, :]
 
-model = resnetBuild.ResnetBuilder.build_resnet_18((img_channels, img_rows, img_cols), nb_classes)
+#model = resnetBuild.ResnetBuilder.build_resnet_18((img_channels, img_rows, img_cols), nb_classes)
+model = util.get_model("resnet18")
 model.compile(loss='categorical_crossentropy',
               optimizer='adam',
               metrics=['accuracy'])

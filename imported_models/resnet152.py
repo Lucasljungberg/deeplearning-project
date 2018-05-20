@@ -12,11 +12,11 @@ https://gist.github.com/flyyufelix/7e2eafb149f72f4d38dd661882c554a6#file-resnet-
 
 Implementation is based on Keras 2.0
 """
-import sys
-sys.path.append('/usr/local/lib/python3.6/dist-packages')
-
 from __future__ import print_function
 from __future__ import absolute_import
+
+import sys
+sys.path.append('/usr/local/lib/python3.6/dist-packages')
 
 from keras.layers import (
     Input, Dense, Conv2D, MaxPooling2D, AveragePooling2D, GlobalMaxPooling2D,
@@ -31,7 +31,6 @@ from keras.applications.imagenet_utils import _obtain_input_shape
 from keras.utils.data_utils import get_file
 
 import warnings
-import sys
 sys.setrecursionlimit(3000)
 
 

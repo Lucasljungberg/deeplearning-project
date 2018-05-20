@@ -1,44 +1,82 @@
 from keras import optimizers
-from keras.applications.vgg16 import VGG16
 from keras.layers import Dropout, Flatten, Dense, GlobalAveragePooling2D
 from keras.models import Model, load_model
+import json
+import matplotlib.pyplot as plt
 import numpy as np
 import os.path
+import pickle
+import vgg16
+import vgg19
 
-extended_vgg16_model_path = "models/extended_vgg16"
+paths = {
+    'vgg16': "models/extended_vgg16",
+    'vgg19': "models/extended_vgg19"
+}
+models = {
+    'vgg16': vgg16,
+    'vgg19': vgg19
+}
 
-def save_model(model):
-    model.save(extended_vgg16_model_path)
+def save_model(model, name):
+    model.save(paths.get(name, 'models/temporary_model'))
     print("Saved model successfully!")
 
-def get_model ():
-    if (os.path.isfile(extended_vgg16_model_path)):
+def get_model (name):
+    if (os.path.isfile(paths.get(name))):
         print("Found existing model")
-        return load_model(extended_vgg16_model_path)
+        return load_model(paths.get(name))
     else:
-        print("Could not find existing model... creating extended model from scratch")
-        return create_extended_model()
+        print("Could not find existing '%s' model... creating extended model from scratch" %name)
+        return models[name].create_model()
 
-def create_extended_model ():
-    # Create pretrained VGG16 model
-    vgg16_model = VGG16(weights='imagenet', include_top=False, input_shape=(48, 48, 3))
-    # Freeze the model - We don't want to train it
-    for layer in vgg16_model.layers:
-        layer.trainable = False
+def save_train_data (name, data):
+    with open('train_data/' + name, 'w') as f:
+        f.write(json.dumps(data))
 
-    # Extend the model for transfer learning
-    ext_model = vgg16_model.output
-    ext_model = Flatten()(ext_model)
-    ext_model = Dense(1024, activation='relu')(ext_model)
-    ext_model = Dropout(0.5)(ext_model)
-    ext_model = Dense(1024, activation='relu')(ext_model)
-    output = Dense(10, activation='softmax')(ext_model)
+def plot (history):
+    x_axis = [i for i in range(len(history['loss']))]
+    plt.figure()
 
-    # Create and compile the new extended model
-    model = Model(inputs = vgg16_model.input, outputs = output)
-    model.compile(
-        loss = 'categorical_crossentropy', 
-        optimizer = optimizers.SGD(lr = 0.001, momentum = 0.9),
-        metrics=['accuracy'])
+    plt.title('Loss')
+    p1 = plt.subplot()
+    p1.plot(x_axis, history['loss'], 'blue', label='Training loss')
+    p1.plot(x_axis, history['val_loss'], 'red', label='Validation loss')
+    p1.legend(loc="best")
 
-    return model
+    plt.figure()
+
+    plt.title('Accuracy')
+    p2 = plt.subplot()
+    p2.plot(x_axis, history['acc'], 'blue', label='Training accuracy')
+    p2.plot(x_axis, history['val_acc'], 'red', label='Validation accuracy')
+    p2.legend(loc="best")
+
+    plt.show()
+
+def dump (obj, fname):
+    with open(fname, 'wb') as file:
+        pickle.dump(obj, file)
+
+def load (fname):
+    with open(fname, 'rb') as file:
+        data = pickle.load(file)
+    return data
+
+def multiclass_gen (x, outputs, bs):
+    """
+    Specifically designed for 4 outputs.
+    :param: x The input pool
+    :outputs: A list of 4 one-hot label pools
+    :bs: Batch size
+    """
+    pool_size = len(x)
+    idx = 0
+    while True:
+        idxs = range(idx, min(pool_size, idx + bs))
+        x_batch = x[idxs]
+        y0_batch = outputs[0][idxs]
+        y1_batch = outputs[1][idxs]
+        y2_batch = outputs[2][idxs]
+        y3_batch = outputs[3][idxs]
+        yield x_batch, [y0_batch, y1_batch, y2_batch, y3_batch]

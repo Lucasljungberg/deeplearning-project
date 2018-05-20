@@ -8,14 +8,21 @@ import os.path
 import pickle
 import vgg16
 import vgg19
+from resnet.resnet101 import Scale
+import resnet101_mtfl as resnet101
+import resnet152_mtfl as resnet152
 
 paths = {
     'vgg16': "models/extended_vgg16",
-    'vgg19': "models/extended_vgg19"
+    'vgg19': "models/extended_vgg19",
+    'resnet101': "models/extended_resnet101",
+    'resnet152': "models/extended_resnet152"
 }
 models = {
     'vgg16': vgg16,
-    'vgg19': vgg19
+    'vgg19': vgg19,
+    'resnet101': resnet101,
+    'resnet152': resnet152
 }
 
 def save_model(model, name):
@@ -25,7 +32,7 @@ def save_model(model, name):
 def get_model (name):
     if (os.path.isfile(paths.get(name))):
         print("Found existing model")
-        return load_model(paths.get(name))
+        return load_model(paths.get(name), custom_objects={'Scale': Scale})
     else:
         print("Could not find existing '%s' model... creating extended model from scratch" %name)
         return models[name].create_model()

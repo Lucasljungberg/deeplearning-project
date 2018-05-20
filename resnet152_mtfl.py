@@ -6,27 +6,29 @@ from keras.utils.data_utils import get_file
 import resnet
 import util
 
+class_outputs = [2, 2, 2, 5]
+output_names = ['mf', 'glasses', 'smile', 'tilt']
+
 def create_model ():
     input_tensor = Input(shape=(250, 250, 3))
-    resnet101 = resnet.ResNet101(weights = 'imagenet', 
+    resnet152 = resnet.ResNet152(weights = 'imagenet', 
         include_top = False,
         input_tensor = input_tensor)
 
-    for layer in resnet101.layers:
+    for layer in resnet152.layers:
         layer.trainable = False
 
-    resnet_output = resnet101.output
+    resnet_output = resnet152.output
 
-    x = Flatten()(resnet_output)
-    x = Dense(1024, activation='relu')(x)
-    x = Dropout(0.5)(x)
-    x = Dense(1024, activation='relu')(x)
-    cls1 = Dense(2, activation='softmax', name = "1")(x)
-    cls2 = Dense(2, activation='softmax', name = "2")(x)
-    cls3 = Dense(2, activation='softmax', name = "3")(x)
-    cls4 = Dense(5, activation='softmax', name = "4")(x)
+    outputs = []
+    for i in range(4):
+        x = Flatten()(resnet_output)
+        x = Dense(1024, activation='relu')(x)
+        x = Dropout(0.5)(x)
+        x = Dense(1024, activation='relu')(x)
+        outputs.append(Dense(class_outputs[i], activation='softmax', name = output_names[i])(x))
 
-    model = Model(input_tensor, [cls1, cls2, cls3, cls4], name = 'resnet101_mtfl')
+    model = Model(input_tensor, outputs, name = 'resnet152_mtfl')
     model.compile(
         loss = 'categorical_crossentropy', 
         optimizer = optimizers.SGD(lr = 0.001, momentum = 0.9),

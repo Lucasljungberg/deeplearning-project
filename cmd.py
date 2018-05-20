@@ -4,7 +4,9 @@ class CmdArgs:
 
     valid_models = [
         'vgg16',
-        'vgg19'
+        'vgg19',
+        'resnet101',
+        'resnet152'
     ]
 
     valid_modes = [
@@ -42,7 +44,7 @@ def validate_cmdargs (args):
         exit()
 
     arg1 = sys.argv[1]
-    if arg1 not in ['train', 'evaluate']:
+    if arg1 not in CmdArgs.valid_modes:
         print('Unknown mode', arg1)
         print_usage()
         exit()

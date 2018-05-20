@@ -11,7 +11,8 @@ import vgg19
 
 paths = {
     'vgg16': "models/extended_vgg16",
-    'vgg19': "models/extended_vgg19"
+    'vgg19': "models/extended_vgg19",
+    'resnet18': "models/temporary_model"
 }
 models = {
     'vgg16': vgg16,

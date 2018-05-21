@@ -11,18 +11,22 @@ import vgg19
 from resnet.resnet101 import Scale
 import resnet101_mtfl as resnet101
 import resnet152_mtfl as resnet152
+import resnet50 as resnet50
 
 paths = {
     'vgg16': "models/extended_vgg16",
     'vgg19': "models/extended_vgg19",
     'resnet101': "models/extended_resnet101",
     'resnet152': "models/extended_resnet152"
+    'resnet18': "models/extended_resnet18",
+    'resnet50': "models/extended_resnet50"
 }
 models = {
     'vgg16': vgg16,
     'vgg19': vgg19,
     'resnet101': resnet101,
-    'resnet152': resnet152
+    'resnet152': resnet152,
+    'resnet50': resnet50
 }
 
 def save_model(model, name):

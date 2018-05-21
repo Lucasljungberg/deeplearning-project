@@ -30,9 +30,20 @@ if len(sys.argv) < 2:
     exit()
 
 # Consider splitting some training data into validation data
-(x_train, y_train), (x_test, y_test) = cf10.load_data()
-x_train = x_train[0:10000, :, :, :]
-y_train = y_train[0:10000, :]
+#(x_train, y_train), (x_test, y_test) = cf10.load_data()
+#x_train = x_train[0:10000, :, :, :]
+#y_train = y_train[0:10000, :]
+def dump (obj, fname):
+    with open(fname, 'wb') as file:
+        pickle.dump(obj, file)
+
+def load (fname):
+    with open(fname, 'rb') as file:
+        data = pickle.load(file)
+    return data
+
+data = load('dataset/lfw_batch_1.dat')
+
 # Parameters
 NUM_CLASSES = 10
 batch_size = 32
@@ -59,9 +70,9 @@ def get_model ():
         return load_model(extended_resnet_model_path)
     else:
         print("Could not find existing model... creating extended model from scratch")
-        return create_extended_model()
+        return create_model()
 
-def create_extended_model ():
+def create_model ():
     # Create pretrained ResNet50 model
     resnet_model = ResNet50(weights='imagenet', include_top=False, input_shape=(200, 200, 3))
     # Freeze the model - We don't want to train it

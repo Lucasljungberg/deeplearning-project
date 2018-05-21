@@ -17,7 +17,7 @@ paths = {
     'vgg16': "models/extended_vgg16",
     'vgg19': "models/extended_vgg19",
     'resnet101': "models/extended_resnet101",
-    'resnet152': "models/extended_resnet152"
+    'resnet152': "models/extended_resnet152",
     'resnet18': "models/extended_resnet18",
     'resnet50': "models/extended_resnet50"
 }

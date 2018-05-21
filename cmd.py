@@ -6,7 +6,8 @@ class CmdArgs:
         'vgg16',
         'vgg19',
         'resnet101',
-        'resnet152'
+        'resnet152',
+        'resnet50'
     ]
 
     valid_modes = [

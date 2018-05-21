@@ -1,3 +1,5 @@
+import sys
+sys.path.append('/usr/local/lib/python3.6/dist-packages')
 from keras import optimizers
 from keras.applications.vgg16 import VGG16, WEIGHTS_PATH_NO_TOP
 from keras.layers import Dropout, Flatten, Dense, GlobalAveragePooling2D, Input, Conv2D, MaxPooling2D

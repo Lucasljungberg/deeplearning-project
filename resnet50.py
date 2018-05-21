@@ -30,19 +30,19 @@ if len(sys.argv) < 2:
     exit()
 
 # Consider splitting some training data into validation data
-#(x_train, y_train), (x_test, y_test) = cf10.load_data()
-#x_train = x_train[0:10000, :, :, :]
-#y_train = y_train[0:10000, :]
-def dump (obj, fname):
-    with open(fname, 'wb') as file:
-        pickle.dump(obj, file)
+(x_train, y_train), (x_test, y_test) = cf10.load_data()
+x_train = x_train[0:10000, :, :, :]
+y_train = y_train[0:10000, :]
+#def dump (obj, fname):
+ #   with open(fname, 'wb') as file:
+  #      pickle.dump(obj, file)
 
-def load (fname):
-    with open(fname, 'rb') as file:
-        data = pickle.load(file)
-    return data
+#def load (fname):
+ #   with open(fname, 'rb') as file:
+  #      data = pickle.load(file)
+   # return data
 
-data = load('dataset/lfw_batch_1.dat')
+#data = load('dataset/lfw_batch_1.dat')
 
 # Parameters
 NUM_CLASSES = 10
@@ -74,7 +74,7 @@ def get_model ():
 
 def create_model ():
     # Create pretrained ResNet50 model
-    resnet_model = ResNet50(weights='imagenet', include_top=False, input_shape=(200, 200, 3))
+    resnet_model = ResNet50(weights='imagenet', include_top=False, input_shape=(250, 250, 3))
     # Freeze the model - We don't want to train it
     for layer in resnet_model.layers:
         layer.trainable = False
@@ -88,7 +88,7 @@ def create_model ():
     output = Dense(10, activation='softmax')(ext_model)
 
     # Create and compile the new extended model
-    model = Model(inputs = resnet_model.input, outputs = output)
+    model = Model(inputs = resnet_model.input, outputs = output, name = 'resnet50')
     model.compile(
         loss = 'categorical_crossentropy', 
         optimizer = optimizers.SGD(lr = 0.001, momentum = 0.9),

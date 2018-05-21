@@ -49,8 +49,17 @@ y_val4 = npu.to_categorical(val_cls_4, 5)
 batch_size = 32
 updates_per_epoch = len(x_train) / batch_size
 epochs = 50
+print(x_train.shape)    
+print(x_train[0, :, :, 0])
+x_train_flipped = np.copy(x_train)
+# flip elements of x_train_flipped
+#for i in range(x_train_flipped.shape[0]):
+   # x_train_flipped
+x_train_flipped = np.flip(x_train_flipped, 2)
+print(x_train_flipped.shape)
+print(x_train_flipped[0, :, :, 0])
+x_train = np.append(x_train, x_train_flipped, axis=0)
 print(x_train.shape)
-
 model = util.get_model(args.model)
 
 if args.mode == 'train':

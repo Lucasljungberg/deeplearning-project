@@ -43,7 +43,7 @@ def create_model ():
         ext_model = Dense(1024, activation='relu')(ext_model)
         ext_model = Dropout(0.5)(ext_model)
         ext_model = Dense(1024, activation='relu')(ext_model)
-        output.append(Dense(class_outputs[i], activation='softmax', name = output_names[i])(ext_model))
+        outputs.append(Dense(class_outputs[i], activation='softmax', name = output_names[i])(ext_model))
 
     # Create and compile the new extended model
     model = Model(input_tensor, outputs, name = 'resnet50')

@@ -48,7 +48,7 @@ y_val4 = npu.to_categorical(val_cls_4, 5)
 
 batch_size = 32
 updates_per_epoch = len(x_train) / batch_size
-epochs = 1
+epochs = 50
 print(x_train.shape)
 
 model = util.get_model(args.model)

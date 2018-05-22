@@ -2,7 +2,7 @@ from keras import optimizers
 from keras.layers import Dropout, Flatten, Dense, GlobalAveragePooling2D
 from keras.models import Model, load_model
 import json
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import numpy as np
 import os.path
 import pickle

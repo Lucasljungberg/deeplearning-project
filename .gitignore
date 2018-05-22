@@ -105,5 +105,4 @@ venv.bak/
 
 # Project specific
 models/
-train_data/
 dataset/

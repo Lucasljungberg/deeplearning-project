@@ -11,8 +11,7 @@ import os
 import os.path
 import tensorflow as tf
 from keras.models import Model, load_model
-from keras import optimizers
-
+from keras import optimizers, regularizers
 
 # Weights file path
 weight_file = 'weights/resnet50_weights_tf_dim_ordering_tf_kernels.h5'
@@ -37,16 +36,16 @@ def create_model ():
 
     # Extend the model for transfer learning
     outputs = []
-    for i in range(4):
+    for i in range(1):
         ext_model = resnet_model.output
         ext_model = Flatten()(ext_model)
-        ext_model = Dense(1024, activation='relu')(ext_model)
-        ext_model = Dropout(0.5)(ext_model)
-        ext_model = Dense(1024, activation='relu')(ext_model)
-        outputs.append(Dense(class_outputs[i], activation='softmax', name = output_names[i])(ext_model))
+        #ext_model = Dense(1024, activation='relu')(ext_model)
+        #ext_model = Dropout(0.5)(ext_model)
+        ext_model = Dense(1024, activation='relu', kernel_regularizer=regularizers.l2(0.01))(ext_model)
+        outputs.append(Dense(2, activation='softmax', name = output_names[i])(ext_model))
 
     # Create and compile the new extended model
-    model = Model(input_tensor, outputs, name = 'resnet50')
+    model = Model(input_tensor, outputs[0], name = 'resnet50')
     model.compile(
         loss = 'categorical_crossentropy', 
         optimizer = optimizers.SGD(lr = 0.001, momentum = 0.9),

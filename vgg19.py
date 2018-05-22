@@ -6,7 +6,6 @@ from keras.utils.data_utils import get_file
 import util
 import os.path
 
-weights_filename = 'vgg19_pretrained_weights.h5'
 model_name = 'vgg19_extended_model'
 
 def create_model():
@@ -15,41 +14,39 @@ def create_model():
     # Start of VGG19 definition
     # Definition found at: https://github.com/keras-team/keras/blob/master/keras/applications/vgg19.py
     # Block 1
-    x = Conv2D(64, (3, 3), activation='relu', padding='same', name='block1_conv1', trainable=False)(input_tensor)
-    x = Conv2D(64, (3, 3), activation='relu', padding='same', name='block1_conv2', trainable=False)(x)
+    x = Conv2D(64, (3, 3), activation='relu', padding='same', name='block1_conv1', trainable=True)(input_tensor)
+    x = Conv2D(64, (3, 3), activation='relu', padding='same', name='block1_conv2', trainable=True)(x)
     x = MaxPooling2D((2, 2), strides=(2, 2), name='block1_pool')(x)
 
     # Block 2
-    x = Conv2D(128, (3, 3), activation='relu', padding='same', name='block2_conv1', trainable=False)(x)
-    x = Conv2D(128, (3, 3), activation='relu', padding='same', name='block2_conv2', trainable=False)(x)
+    x = Conv2D(128, (3, 3), activation='relu', padding='same', name='block2_conv1', trainable=True)(x)
+    x = Conv2D(128, (3, 3), activation='relu', padding='same', name='block2_conv2', trainable=True)(x)
     x = MaxPooling2D((2, 2), strides=(2, 2), name='block2_pool')(x)
 
     # Block 3
-    x = Conv2D(256, (3, 3), activation='relu', padding='same', name='block3_conv1', trainable=False)(x)
-    x = Conv2D(256, (3, 3), activation='relu', padding='same', name='block3_conv2', trainable=False)(x)
-    x = Conv2D(256, (3, 3), activation='relu', padding='same', name='block3_conv3', trainable=False)(x)
-    x = Conv2D(256, (3, 3), activation='relu', padding='same', name='block3_conv4', trainable=False)(x)
+    x = Conv2D(256, (3, 3), activation='relu', padding='same', name='block3_conv1', trainable=True)(x)
+    x = Conv2D(256, (3, 3), activation='relu', padding='same', name='block3_conv2', trainable=True)(x)
+    x = Conv2D(256, (3, 3), activation='relu', padding='same', name='block3_conv3', trainable=True)(x)
+    x = Conv2D(256, (3, 3), activation='relu', padding='same', name='block3_conv4', trainable=True)(x)
     x = MaxPooling2D((2, 2), strides=(2, 2), name='block3_pool')(x)
 
     # Block 4
-    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block4_conv1', trainable=False)(x)
-    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block4_conv2', trainable=False)(x)
-    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block4_conv3', trainable=False)(x)
-    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block4_conv4', trainable=False)(x)
+    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block4_conv1', trainable=True)(x)
+    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block4_conv2', trainable=True)(x)
+    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block4_conv3', trainable=True)(x)
+    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block4_conv4', trainable=True)(x)
     x = MaxPooling2D((2, 2), strides=(2, 2), name='block4_pool')(x)
 
     # Block 5
-    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block5_conv1', trainable=False)(x)
-    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block5_conv2', trainable=False)(x)
-    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block5_conv3', trainable=False)(x)
-    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block5_conv4', trainable=False)(x)
+    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block5_conv1', trainable=True)(x)
+    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block5_conv2', trainable=True)(x)
+    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block5_conv3', trainable=True)(x)
+    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block5_conv4', trainable=True)(x)
     x = MaxPooling2D((2, 2), strides=(2, 2), name='block5_pool')(x)
     # End of VGG19 definition
 
     vgg19 = Model(input_tensor, x, name='custom_vgg19')
 
-    weights_location = get_file(weights_filename, WEIGHTS_PATH_NO_TOP)
-    vgg19.load_weights(weights_location)
 
     vgg19_output = vgg19.output
     x = Flatten()(vgg19_output)

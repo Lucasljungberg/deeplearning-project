@@ -11,7 +11,7 @@ from keras.utils import np_utils
 
 args = cmd.validate_cmdargs(sys.argv)
 
-batch_size = 32
+batch_size = 128
 nb_classes = 10
 epochs = 50
 data_augmentation = True

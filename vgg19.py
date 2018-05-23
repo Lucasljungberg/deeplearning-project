@@ -60,7 +60,7 @@ def create_model(shape=(32, 32, 3), classifiers = 10, train = False):
     model = Model(input_tensor, x, name='extended_vgg19')
     model.compile(
         loss = 'categorical_crossentropy', 
-        optimizer = optimizers.SGD(lr = 0.0001, momentum = 0.9),
+        optimizer = optimizers.SGD(lr = 0.001, momentum = 0.9),
         metrics=['accuracy'])
 
     return model

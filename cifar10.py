@@ -30,11 +30,11 @@ import util
 
 lr_reducer = ReduceLROnPlateau(factor=np.sqrt(0.1), cooldown=0, patience=5, min_lr=0.5e-6)
 early_stopper = EarlyStopping(min_delta=0.001, patience=10)
-csv_logger = CSVLogger('resnet18_cifar10.csv')
+csv_logger = CSVLogger('resnet50_cifar10.csv')
 
 batch_size = 32
 nb_classes = 10
-nb_epoch = 200
+nb_epoch = 50
 data_augmentation = True
 
 # input image dimensions
@@ -65,7 +65,7 @@ X_test /= 128.
 #Y_train = Y_train[0 : 32, :]
 
 #model = resnetBuild.ResnetBuilder.build_resnet_18((img_channels, img_rows, img_cols), nb_classes)
-model = util.get_model("resnet18")
+model = util.get_model("resnet50")
 model.compile(loss='categorical_crossentropy',
               optimizer='adam',
               metrics=['accuracy'])
@@ -109,7 +109,7 @@ if (mode in ['train']):
      # print(res.history.shape)
       print(res.history)
       util.save_model(model, 'resnet18')
-      #util.save_train_data('resnet18', res.history)
+      util.save_train_data('resnet18', res.history)
       #util.plot(res.history)
 
 elif (mode in ['test', 'evaluate']):

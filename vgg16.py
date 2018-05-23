@@ -7,6 +7,7 @@ import numpy as np
 import util
 
 model_name = 'vgg16_extended_model'
+weights_filename = 'vgg16_pretrained_weights.h5'
 
 def create_model(shape=(32, 32, 3), classifiers = 10, train = False):
     input_tensor = Input(shape=shape)
@@ -42,6 +43,9 @@ def create_model(shape=(32, 32, 3), classifiers = 10, train = False):
     # End of VGG16 definition
 
     vgg16 = Model(input_tensor, x, name='custom_vgg16')
+    
+    weights_location = get_file(weights_filename, WEIGHTS_PATH_NO_TOP)
+    vgg16.load_weights(weights_location)
 
     vgg16_output = vgg16.output
 

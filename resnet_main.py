@@ -6,15 +6,16 @@ import keras.preprocessing.image as im
 import keras.utils.np_utils as npu
 import numpy as np
 import resnet101_mtfl
+import resnet18
+import resnet34
+import resnet50
 import sys
 import util
 import vgg16
-import resnet34
-import resnet18
 
 batch_size = 32
 nb_classes = 10
-epochs = 50
+epochs = 5
 data_augmentation = True
 
 # input image dimensions
@@ -55,6 +56,6 @@ res = model.fit_generator(
     validation_data = datagen.flow(x_test, y_test, batch_size = batch_size))
   #  validation_data = util.multiclass_gen(x_val, (y_val1, y_val2, y_val3, y_val4), batch_size))
 
-util.save_model(model, 'resnet18')
+util.save_model(model, 'resnet50')
 
 util.save_train_data(model.name, res.history)

@@ -7,6 +7,7 @@ import util
 import os.path
 
 model_name = 'vgg19_extended_model'
+weights_filename = 'vgg19_pretrained_weights.h5'
 
 def create_model(shape=(32, 32, 3), classifiers = 10, train = False):
     input_tensor = Input(shape=shape)
@@ -14,7 +15,6 @@ def create_model(shape=(32, 32, 3), classifiers = 10, train = False):
     # Start of VGG19 definition
     # Definition found at: https://github.com/keras-team/keras/blob/master/keras/applications/vgg19.py
     # Block 1
-<<<<<<< HEAD
     x = Conv2D(64, (3, 3), activation='relu', padding='same', name='block1_conv1', trainable=train)(input_tensor)
     x = Conv2D(64, (3, 3), activation='relu', padding='same', name='block1_conv2', trainable=train)(x)
     x = MaxPooling2D((2, 2), strides=(2, 2), name='block1_pool')(x)
@@ -47,6 +47,8 @@ def create_model(shape=(32, 32, 3), classifiers = 10, train = False):
     # End of VGG19 definition
 
     vgg19 = Model(input_tensor, x, name='custom_vgg19')
+    weights_location = get_file(weights_filename, WEIGHTS_PATH_NO_TOP)
+    vgg19.load_weights(weights_location)
 
     vgg19_output = vgg19.output
     x = Flatten()(vgg19_output)

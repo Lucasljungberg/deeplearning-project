@@ -6,7 +6,7 @@ def create_model (shape = (32, 32, 3), classifiers = 10, train = False):
     model.name = 'extended_resnet34'
     model.compile(
         loss = 'categorical_crossentropy', 
-        optimizer = optimizers.SGD(lr = 0.001, momentum = 0.9),
+        optimizer = optimizers.SGD(lr = 0.01, momentum = 0.9, decay = 0.0001),
         metrics=['accuracy'])
 
     return model

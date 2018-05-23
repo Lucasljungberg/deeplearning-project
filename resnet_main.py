@@ -11,6 +11,7 @@ import util
 import vgg16
 import resnet34
 import resnet18
+import resnet50
 
 batch_size = 32
 nb_classes = 10
@@ -35,7 +36,7 @@ x_test = x_test.astype('float32')
 updates_per_epoch = len(x_train) / batch_size
 
 
-model = resnet18.create_model(shape=(3, 32, 32), classifiers = 10, train = True)
+model = resnet50.create_model(shape=(3, 32, 32), classifiers = 10, train = True)
 datagen = ImageDataGenerator(
             featurewise_center=True,
             featurewise_std_normalization=True,
@@ -55,6 +56,6 @@ res = model.fit_generator(
     validation_data = datagen.flow(x_test, y_test, batch_size = batch_size))
   #  validation_data = util.multiclass_gen(x_val, (y_val1, y_val2, y_val3, y_val4), batch_size))
 
-util.save_model(model, 'resnet18')
+util.save_model(model, 'resnet50')
 
 util.save_train_data(model.name, res.history)
